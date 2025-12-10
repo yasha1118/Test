@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .task { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .completed { text-decoration: line-through; color: #888; }
+        form { margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-radius: 5px; }
+        input[type="text"] { padding: 8px; width: 40%; margin-right: 10px; }
+        button { padding: 8px 15px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 3px; }
+        button:hover { background: #0056b3; }
+        .actions a { text-decoration: none; margin-left: 10px; color: #555; }
+        .delete-btn { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>Task Tracker</h1>
+
+    <form action="/add" method="POST">
+        <input type="text" name="title" placeholder="Task Title" required>
+        <input type="text" name="description" placeholder="Description (optional)">
+        <button type="submit">Add Task</button>
+    </form>
+
+    <div class="task-list">
+        {% for task in tasks %}
+        <div class="task">
+            <div class="info">
+                <h3 class="{{ 'completed' if task.completed else '' }}">{{ task.title }}</h3>
+                {% if task.description %}
+                <p>{{ task.description }}</p>
+                {% endif %}
+            </div>
+            <div class="actions">
+                <a href="/complete/{{ task.id }}">{{ 'Undo' if task.completed else 'Complete' }}</a>
+                <a href="/delete/{{ task.id }}" class="delete-btn">Delete</a>
+            </div>
+        </div>
+        {% else %}
+        <p>No tasks yet. Add one above!</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
